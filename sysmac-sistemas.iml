@@ -41,11 +41,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="hibernate4-persistence" level="project" />
-    <orderEntry type="library" exported="" name="AbsoluteLayout" level="project" />
-    <orderEntry type="library" exported="" name="Spring Data JPA-2.2.4.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="Spring Integration-5.2.3.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="Spring MVC-5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.toedter:jcalendar:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.netbeans.external:AbsoluteLayout:RELEASE113" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
