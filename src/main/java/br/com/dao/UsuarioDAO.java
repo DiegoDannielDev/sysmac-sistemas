@@ -7,18 +7,18 @@ package br.com.dao;
 
 import br.com.controller.UsuarioControler;
 import br.com.model.Usuario;
-import br.com.view.FormUsuarios;
 import br.com.view.FormLogin;
+import br.com.view.FormUsuarios;
+
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
- *
  * @author Diego Danniel
  */
 public class UsuarioDAO {
@@ -31,6 +31,7 @@ public class UsuarioDAO {
     FormUsuarios codigoUsuario;
     Usuario cad;
     FormLogin login = new FormLogin();
+
     public UsuarioDAO() {
     }
 
@@ -58,7 +59,7 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar\n " + e.getMessage());
-               login.barra.setVisible(false);
+            login.barra.setVisible(false);
             return false;
         } finally {
             conect.desconecta();
@@ -85,8 +86,7 @@ public class UsuarioDAO {
             pst = conect.conn.prepareStatement(sql);
             rs = pst.executeQuery();
             while (rs.next()) {
-                usuario.add(new Usuario(
-                        rs.getInt("codigo"),
+                usuario.add(new Usuario(rs.getLong("codigo"),
                         rs.getString("nome"),
                         rs.getString("login"),
                         rs.getString("email")));
@@ -104,7 +104,7 @@ public class UsuarioDAO {
         try {
             conect.executasql("select * from usuarios");
             conect.rs.next();
-            cad.setCodigoUser(rs.getInt("CODIGO"));
+            cad.setCodigoUser(rs.getLong("CODIGO"));
             cad.setNomeUser(rs.getString("NOME"));
             cad.setLoginUser(rs.getString("LOGIN"));
             cad.setEmailUser(rs.getString("EMAIL"));
@@ -126,7 +126,7 @@ public class UsuarioDAO {
             conect.rs.last();
 
             users.add(new Usuario(
-                    rs.getInt("CODIGO"),
+                    rs.getLong("CODIGO"),
                     rs.getString("nome"),
                     rs.getString("LOGIN"),
                     rs.getString("EMAIL")));

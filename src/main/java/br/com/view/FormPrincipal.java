@@ -16,9 +16,7 @@ import java.io.InputStream;
  * and open the template in the editor.
  */
 
-/**
- * @author Diego Danniel
- */
+
 public final class FormPrincipal extends JFrame {
 
     private static FormAcessoRestrito acessos;
@@ -32,9 +30,10 @@ public final class FormPrincipal extends JFrame {
     /**
      * Creates new form Tela_Principal
      */
+
     public FormPrincipal() {
         initComponents();
-        lookandfeel();
+//        lookandfeel();
         caregarImagen(desktop, foto1);
         //gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
 
@@ -66,8 +65,6 @@ public final class FormPrincipal extends JFrame {
 
     public void chamarTelaCadastroCasas() {
 
-        GerenciamentoTelaModel gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
-        gerenciamentoTelas.abrirJanelas(FormCasas.geCasasCadastro());
 
     }
 
@@ -497,8 +494,7 @@ public final class FormPrincipal extends JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        GerenciamentoTelaModel gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
-        gerenciamentoTelas.abrirJanelas(FormCasas.geCasasCadastro());
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnAtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtClienteActionPerformed
@@ -521,8 +517,7 @@ public final class FormPrincipal extends JFrame {
 
     private void MenuCadastroFuncionariosEUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroFuncionariosEUsuariosActionPerformed
         // TODO add your handling code here:
-        GerenciamentoTelaModel gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
-        gerenciamentoTelas.abrirJanelas(FormUsuarios.getCadUsuarios());
+
 
     }//GEN-LAST:event_MenuCadastroFuncionariosEUsuariosActionPerformed
 

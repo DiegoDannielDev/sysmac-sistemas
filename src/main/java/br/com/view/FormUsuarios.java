@@ -5,264 +5,28 @@
  */
 package br.com.view;
 
-import br.com.controller.UpperCase;
-import br.com.controller.UsuarioControler;
-import br.com.dao.ConexaoDAO;
 import br.com.model.Usuario;
-import java.awt.HeadlessException;
+import br.com.servico.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 import java.awt.event.KeyEvent;
-import static java.lang.Thread.sleep;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.util.Optional;
 
 /**
- *
  * @author Diego Danniel
  */
+@Controller
 public class FormUsuarios extends javax.swing.JInternalFrame {
 
-    FormPrincipal pri;
-    ConexaoDAO conect = new ConexaoDAO();
-    PreparedStatement pst = null;
-    ResultSet rs = null;
+    @Autowired
+    private UsuarioService usuarioService;
 
-    private UsuarioControler user;
-    private static FormUsuarios cadUsuarios;
-    String resposta;
-
-//    public static FormTabelaPesquisaUsuario pesquisar;
-
-    public Object converte() {
-
-        try {
-            String password = new String(this.txtSenhaUser.getPassword());
-            String s = password;  // SENHA QUE VAI SER FEITA A CONVERSÃO PARA O MD5
-
-            MessageDigest m = MessageDigest.getInstance("SHA-256");
-
-            m.update(s.getBytes(), 0, s.length());
-            resposta = new BigInteger(1, m.digest()).toString();
-            //JOptionPane.showMessageDialog(null,resposta );
-
-        } catch (NoSuchAlgorithmException ex) {
-
-        }
-        return null;
+    public Optional<Usuario> optional() {
+        Optional<Usuario> optional = this.usuarioService.findUsuario(Long.parseLong(txtCodigoUser.getText()));
+        return optional.map(u -> new Usuario(u.getCodigoUser(), u.getNomeUser(), u.getLoginUser(), u.getEmailUser()));
     }
 
-    public FormUsuarios() {
-
-        initComponents();
-        barra.setVisible(false);
-        conect.conexao();
-        user = new UsuarioControler();
-        txtLoginUser.setDocument(new UpperCase().getDocument());
-        txtNomeUser.setDocument(new UpperCase().getDocument());
-        Thread t = new Thread();
-    }
-
-    public void chamarTelaUsuario() {
-        pri = new FormPrincipal();
-//        pesquisar = new FormTabelaPesquisaUsuario(this, true);
-//       pesquisar.setVisible(true);
-//       pri.getDesktop().add(pesquisar);
-    }
-
-     public void Thread() {
-
-        new Thread() {
-            public void run() {
-                int i = 0;
-                while (i < 101) {
-                    try {
-                        barra.setValue(i);
-                        barra.setVisible(true);
-                        i++;
-                        if (i > 0) {
-                            barra.setStringPainted(true);
-                            barra.setString("Validando usuario");
-                        }
-                        i++;
-                        if (i > 40) {
-                            converte();
-                        }
-                        i++;
-                        if (i > 60) {
-                            barra.setString("Aguarde");
-                            
-                        }
-                        i++;
-                        if (i > 90) {
-                            barra.setString("Validado...Salvando");
-                            
-                        }
-                        i++;
-                        if (i > 100) {
-                            
-                            cadastrarUsuario(user);
-                        }
-                        sleep(35);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(FormUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                       
-                        barra.setVisible(false);
-                    }
-                   
-                }
-                
-            
-
-        }.start();
-    }
-
-    public void novoId() {
-
-        String sql = "SELECT MAX(CODIGO)AS CODIGO FROM `usuarios`";
-        try {
-            pst = conect.conn.prepareStatement(sql);
-
-            rs = pst.executeQuery();
-            while (rs.next()) {
-                txtCodigoUser.setText(Integer.toString(rs.getInt("CODIGO")));
-                int novoId = rs.getInt("codigo") + 1;
-                txtCodigoUser.setText(Integer.toString(novoId));
-                txtCodigoUser.setEditable(false);
-                txtNomeUser.setEditable(true);
-                txtEmailUser.setEditable(true);
-
-                txtLoginUser.setEditable(true);
-                txtSenhaUser.setEditable(true);
-
-                btnGravar.setEnabled(true);
-                btnNovo.setEnabled(false);
-                btnPesquisar.setEnabled(false);
-                txtNomeUser.requestFocus();
-            }
-            //txtCodigo.setText(Integer.toString(rs.getInt("id")));
-
-        } catch (SQLException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-
-    public static FormUsuarios getCadUsuarios() {
-        if (cadUsuarios == null) {
-            cadUsuarios = new FormUsuarios();
-
-        }
-
-        return cadUsuarios;
-    }
-
-    /**
-     *
-     * @param user
-     */
-    public void cadastrarUsuario(UsuarioControler user) {
-       
-        try {
-            user.getUsuario().setNomeUser(txtNomeUser.getText());
-            user.getUsuario().setLoginUser(txtLoginUser.getText());
-            user.getUsuario().setSenhaUser(resposta);
-            user.getUsuario().setEmailUser(txtEmailUser.getText());
-
-            boolean add = user.inserirUsuario();
-            if (add == true) {
-                txtNomeUser.setEditable(false);
-                txtEmailUser.setEditable(false);
-
-                txtLoginUser.setEditable(false);
-                txtSenhaUser.setEditable(false);
-                
-                txtCodigoUser.setText("");
-                txtNomeUser.setText("");
-                txtEmailUser.setText("");
-
-                txtLoginUser.setText("");
-                txtSenhaUser.setText("");
-
-                btnGravar.setEnabled(false);
-                btnNovo.setEnabled(true);
-
-            }
-
-        } catch (HeadlessException | NumberFormatException | SQLException e) {
-            JOptionPane.showMessageDialog(null, "ERRO! " + e.getMessage());
-            
-            
-
-        }
-
-    }
-
-    public void listarUsuarios() throws SQLException {
-        try {
-            user.listarUsuarios();
-            if (user.getUsuarioModels().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "não existe usuario cadastrado com essas informações");
-            } else {
-                user.getUsuarioModels().forEach((usuario) -> {
-                    String codigo = String.valueOf(usuario.getCodigoUser());
-                    String nome = usuario.getNomeUser();
-                    String login = usuario.getLoginUser();
-                    String email = usuario.getEmailUser();
-
-                    txtCodigoUser.setText(codigo);
-                    txtNomeUser.setText(nome);
-                    txtLoginUser.setText(login);
-                    txtEmailUser.setText(email);
-                });
-            }
-        } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "Não foi possivel listar os usuarios " + e.getMessage());
-        }
-    }
-
-    public void listarPrimeiro() {
-        user.buscarIdPrimeiro();
-        user.getUsuarioModels().forEach((Usuario t) -> {
-            String codigo = String.valueOf(t.getCodigoUser());
-            String nome = t.getNomeUser();
-            String login = t.getLoginUser();
-            String email = t.getEmailUser();
-
-            txtCodigoUser.setText(codigo);
-            txtNomeUser.setText(nome);
-            txtLoginUser.setText(login);
-            txtEmailUser.setText(email);
-            //txtSenhaUser.setText("Criptografada");
-        });
-    }
-
-    public void listarProximo() {
-        user.buscarIdProximo();
-        user.getUsuarioModels().forEach((t) -> {
-            String codigo = String.valueOf(t.getCodigoUser());
-            String nome = t.getNomeUser();
-            String login = t.getLoginUser();
-            String email = t.getEmailUser();
-
-            txtCodigoUser.setText(codigo);
-            txtNomeUser.setText(nome);
-            txtLoginUser.setText(login);
-            txtEmailUser.setText(email);
-            txtSenhaUser.setText("Criptografada");
-        });
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -387,97 +151,97 @@ public class FormUsuarios extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
-                                .addComponent(jLabel5))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNomeUser)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtCodigoUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtLoginUser)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtSenhaUser, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtEmailUser, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDeletar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPesquisar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNovo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGravar)))
-                .addContainerGap())
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGap(35, 35, 35)
+                                                                .addComponent(jLabel5))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtNomeUser)
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                                .addComponent(txtCodigoUser, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jLabel8)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                                                                .addComponent(barra, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(28, 28, 28))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                                .addComponent(txtLoginUser)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(jLabel4)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(txtSenhaUser, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(txtEmailUser, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButton9)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButton10)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnDeletar)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnPesquisar)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnNovo)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnGravar)))
+                                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(barra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtCodigoUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel8)))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNomeUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtLoginUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSenhaUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtEmailUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton9)
-                        .addComponent(jButton10))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnGravar)
-                        .addComponent(btnNovo)
-                        .addComponent(btnPesquisar)
-                        .addComponent(btnDeletar)))
-                .addGap(0, 15, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(14, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(barra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel1)
+                                                .addComponent(txtCodigoUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel8)))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(txtNomeUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(txtLoginUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtSenhaUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel4))
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel5)
+                                        .addComponent(txtEmailUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jButton9)
+                                                .addComponent(jButton10))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(btnGravar)
+                                                .addComponent(btnNovo)
+                                                .addComponent(btnPesquisar)
+                                                .addComponent(btnDeletar)))
+                                .addGap(0, 15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setBounds(450, 100, 544, 229);
@@ -485,43 +249,36 @@ public class FormUsuarios extends javax.swing.JInternalFrame {
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
         // TODO add your handling code here:ca
-        Thread();
 
 
     }//GEN-LAST:event_btnGravarActionPerformed
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // TODO add your handling code here:
-        novoId();
+
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void txtCodigoUserKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUserKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_F2) {
-            chamarTelaUsuario();
+
         }
 
 
     }//GEN-LAST:event_txtCodigoUserKeyPressed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        try {
-            // TODO add your handling code here:
-            listarUsuarios();
-        } catch (SQLException ex) {
-            Logger.getLogger(FormUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    }
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-        listarPrimeiro();
+
 
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-        listarProximo();
+
     }//GEN-LAST:event_jButton10ActionPerformed
 
 

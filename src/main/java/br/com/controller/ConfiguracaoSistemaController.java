@@ -5,7 +5,6 @@
  */
 package br.com.controller;
 
-import br.com.model.ConfiguracaoSistemaModel;
 import br.com.view.FormConfiguracaoSistema;
 
 /**

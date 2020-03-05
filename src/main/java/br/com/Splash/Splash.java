@@ -5,31 +5,36 @@
  */
 package br.com.Splash;
 
+
 import br.com.dao.ConexaoDAO;
 import br.com.view.FormLogin;
-import java.awt.Color;
-import java.awt.Dimension;
-import static java.lang.Thread.sleep;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
-import javax.swing.JWindow;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
  * @author Diego Danniel
  */
+
+@SpringBootApplication
 public class Splash extends JWindow {
+
 
     FormLogin login;
     AbsoluteLayout absoluto;
     AbsoluteConstraints absImagem, absBarra, absLabel;
-    ImageIcon imagem;
+    // label2.setText("Iniciando Sistemas");
+//label2.setBackground(Color.WHITE);
+//  label2.setBounds(0, 20, 100, 30);
+
+    //    ImageIcon imagem = new ImageIcon(this.getClass().getResource("/br/com/icon/logo.png"));
     JLabel label, label2;
     JProgressBar barra;
 
@@ -39,9 +44,12 @@ public class Splash extends JWindow {
     ResultSet rs = null;
 
     public Splash() {
+
         telaSplash();
         Thread();
         conect = new ConexaoDAO();
+        login = new FormLogin();
+
 
     }
 
@@ -53,21 +61,16 @@ public class Splash extends JWindow {
         barra.setPreferredSize(new Dimension(500, 20));
         barra.setBackground(Color.BLACK);
         //barra.setIndeterminate(true);
-        barra.setForeground(new Color(255,115,28));
-        
+        barra.setForeground(new Color(255, 115, 28));
+
         barra.setStringPainted(true);
         label = new JLabel();
         label.setBounds(0, 400, 500, 30);
         label.setSize(500, 30);
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
-        // label2.setText("Iniciando Sistemas");
-        //label2.setBackground(Color.WHITE);
-        //  label2.setBounds(0, 20, 100, 30);
 
-        imagem = new ImageIcon(this.getClass().getResource("logo.png"));
-
-        label.setIcon(imagem);
+//        label.setIcon(imagem);
         getContentPane().setLayout(absoluto);
         this.getContentPane().add(label, absImagem);
         this.getContentPane().add(barra, absBarra);
@@ -100,12 +103,12 @@ public class Splash extends JWindow {
                         barra.setString("Verificando Conexão de Banco de dados");
 
                     }
-                   i++;
+                    i++;
                     if (i > 60) {
-                        
-                        verificaConexao();
-                    }   
-                   
+
+//                        verificaConexao();
+                    }
+
 
                     if (i >= 100) {
                         barra.setString("Bem Vindo");
@@ -116,10 +119,10 @@ public class Splash extends JWindow {
                         sleep(101);
                     } catch (InterruptedException ex) {
 
-                        
+
                     }
                 }
-                login = new FormLogin();
+
                 login.setVisible(true);
                 dispose();
             }
@@ -128,28 +131,30 @@ public class Splash extends JWindow {
     }
 
     public static void main(String[] args) {
-        new Splash().show();
+        SpringApplication.run(Splash.class, args);
+
     }
 
     public void verificaConexao() {
         Thread t = new Thread();
         conect.conexao();
-       
+
         try {
             if (conexao != null) {
                 barra.setString("Conexão com o banco de dados mal sucedida!");
                 t.stop();
-            }
-            else{
-                 
-                 barra.setString("Conexão com o banco bem sucedida");
-                 //JOptionPane.showMessageDialog(null,"Erro ao conectar ao banco de dados");
-                 
-                 
+            } else {
+
+                barra.setString("Conexão com o banco bem sucedida");
+                //JOptionPane.showMessageDialog(null,"Erro ao conectar ao banco de dados");
+
+
             }
         } catch (Exception e) {
-           
+
         }
 
     }
+
+
 }
