@@ -46,7 +46,7 @@
                     <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                       <KeyStroke key="Ctrl+Alt+U"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Funcionarios e Usuarios"/>
+                    <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuCadastroFuncionariosEUsuariosActionPerformed"/>
@@ -118,6 +118,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Lan&#xe7;amentos"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuContasAReceberLancamentosActionPerformed"/>
+                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="MenuContasAReceberRecebimentos">
                   <Properties>

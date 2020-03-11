@@ -1,44 +1,24 @@
 package br.com.view;
 
-import br.com.controller.FundoImagem;
-import br.com.model.GerenciamentoTelaModel;
+import br.com.util.GerenciamentoTelaModel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 public final class FormPrincipal extends JFrame {
 
-    private static FormAcessoRestrito acessos;
-    private static final long serialVersionUID = 1L;
-
-    String seta_look = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel"; //"com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+    private static GerenciamentoTelaModel telaModel;
 
     /*Buscando o caminho da logotipo do sistema*/
-    public InputStream foto1 = this.getClass().getResourceAsStream("SysmacLogo.png");
-
+//    public InputStream foto1 = this.getClass().getResourceAsStream("SysmacLogo.png");
     /**
      * Creates new form Tela_Principal
      */
-
     public FormPrincipal() {
         initComponents();
-//        lookandfeel();
-        caregarImagen(desktop, foto1);
-        //gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
+        telaModel = new GerenciamentoTelaModel();
 
     }
-
 
     public void logoff() {
         FormLogin login = new FormLogin();
@@ -53,18 +33,10 @@ public final class FormPrincipal extends JFrame {
      */
     /*Metodo desenvolvido para a chamada de tela em modal para acesso restrito*/
     public void chamarTelaAcessoRestrito() {
-        acessos = new FormAcessoRestrito(this, true);
-        acessos.setVisible(true);
-    }
 
-    public void chamarTelaConfiguracao() {
-        GerenciamentoTelaModel gerenciamentoTelas = new GerenciamentoTelaModel(desktop);
-        gerenciamentoTelas.abrirJanelas(FormConfiguracaoSistema.getConfiguracaoSistema());
     }
-
 
     public void chamarTelaCadastroCasas() {
-
 
     }
 
@@ -267,7 +239,7 @@ public final class FormPrincipal extends JFrame {
         MenuCadastroPrincipal.add(MenuCadastroCasas);
 
         MenuCadastroFuncionariosEUsuarios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        MenuCadastroFuncionariosEUsuarios.setText("Funcionarios e Usuarios");
+        MenuCadastroFuncionariosEUsuarios.setText("Usuários");
         MenuCadastroFuncionariosEUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuCadastroFuncionariosEUsuariosActionPerformed(evt);
@@ -312,6 +284,11 @@ public final class FormPrincipal extends JFrame {
         MenuContasAReceber.setText("Contas a Receber");
 
         MenuContasAReceberLancamentos.setText("Lançamentos");
+        MenuContasAReceberLancamentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuContasAReceberLancamentosActionPerformed(evt);
+            }
+        });
         MenuContasAReceber.add(MenuContasAReceberLancamentos);
 
         MenuContasAReceberRecebimentos.setText("Recebimentos");
@@ -480,12 +457,8 @@ public final class FormPrincipal extends JFrame {
 
     }//GEN-LAST:event_btnAtClienteMouseMoved
 
-    private void MenuRelatoriosClientesGeralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuRelatoriosClientesGeralActionPerformed
-        // TODO add your handling code here:
-        FormRelatoriosClientesGeral rtl = new FormRelatoriosClientesGeral();
-        rtl.setVisible(true);
-        desktop.add(rtl);
-    }//GEN-LAST:event_MenuRelatoriosClientesGeralActionPerformed
+    private void MenuRelatoriosClientesGeralActionPerformed(java.awt.event.ActionEvent evt) {
+    }
 
     private void MenuCadastroCasasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroCasasActionPerformed
         // TODO add your handling code here:
@@ -505,7 +478,8 @@ public final class FormPrincipal extends JFrame {
     }//GEN-LAST:event_btnAtClienteActionPerformed
 
     private void MenuContasAReceberRecebimentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuContasAReceberRecebimentosActionPerformed
-        // TODO add your handling code here:
+
+
     }//GEN-LAST:event_MenuContasAReceberRecebimentosActionPerformed
 
     private void MenuConfiguracaoParametrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuConfiguracaoParametrosActionPerformed
@@ -517,7 +491,7 @@ public final class FormPrincipal extends JFrame {
 
     private void MenuCadastroFuncionariosEUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCadastroFuncionariosEUsuariosActionPerformed
         // TODO add your handling code here:
-
+        telaModel.abrirJanelas(new FormUsuarios(), desktop);
 
     }//GEN-LAST:event_MenuCadastroFuncionariosEUsuariosActionPerformed
 
@@ -537,37 +511,16 @@ public final class FormPrincipal extends JFrame {
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void MenuContasAReceberLancamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuContasAReceberLancamentosActionPerformed
+        // TODO add your handling code here:
+        telaModel.abrirJanelas(new FormContasAReceber(), desktop);
+    }//GEN-LAST:event_MenuContasAReceberLancamentosActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FormPrincipal().setVisible(true);
@@ -575,38 +528,14 @@ public final class FormPrincipal extends JFrame {
         });
     }
 
-    public JDesktopPane getDesktop() {
-        return desktop;
-    }
-
-    public void setDesktop(JDesktopPane desktop) {
-        this.desktop = desktop;
-    }
-
-    public void lookandfeel() {
-        try {
-            UIManager.setLookAndFeel(seta_look);
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            // UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-            SwingUtilities.updateComponentTreeUI(this);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException erro) {
-            JOptionPane.showMessageDialog(null, erro);
-        }
-    }
-
-
-    /**
-     * @param jDeskp
-     * @param fileImagen
-     */
-    public void caregarImagen(javax.swing.JDesktopPane jDeskp, InputStream fileImagen) {
-        try {
-            BufferedImage image = ImageIO.read(fileImagen);
-            jDeskp.setBorder(new FundoImagem(image));
-        } catch (IOException e) {
-            System.out.println("Imagem do sistema não disponiovel ");
-        }
-    }
+//    public void caregarImagen(javax.swing.JDesktopPane jDeskp, InputStream fileImagen) {
+//        try {
+//            BufferedImage image = ImageIO.read(fileImagen);
+//            jDeskp.setBorder(new FundoImagem(image));
+//        } catch (IOException e) {
+//            System.out.println("Imagem do sistema não disponiovel ");
+//        }
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem MenuAlugarCasa;

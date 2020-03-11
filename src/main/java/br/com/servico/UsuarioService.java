@@ -1,8 +1,9 @@
 package br.com.servico;
 
-import br.com.model.Usuario;
+import br.com.entitys.Usuario;
+import br.com.exceptions.UsuarioExceptions;
+import br.com.exceptions.enums.UsuarioEnum;
 import br.com.repositorys.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,7 +13,6 @@ public class UsuarioService {
 
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
@@ -25,4 +25,30 @@ public class UsuarioService {
         }
         return optional;
     }
+
+    public Usuario findById(Long id) {
+        Optional<Usuario> byId = this.usuarioRepository.findById(id);
+        if (byId.isPresent()) {
+            return byId.get();
+        } else {
+            throw new UsuarioExceptions("Usuario não encontrado");
+        }
+
+    }
+
+    public Usuario save(Usuario usuario) {
+        if (usuario.getNomeUser().equals(null)) {
+            throw new UsuarioExceptions(UsuarioEnum.USUARIO_NOME_NULLO.getMsg());
+        }
+        if (usuario.getSenhaUser().equals(null)) {
+            throw new UsuarioExceptions(UsuarioEnum.USUARIO_SENHA_NULLO.getMsg());
+        }
+        return usuarioRepository.save(usuario);
+    }
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
+
 }

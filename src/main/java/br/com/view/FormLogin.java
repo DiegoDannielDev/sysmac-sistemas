@@ -5,8 +5,6 @@
  */
 package br.com.view;
 
-import br.com.dao.ValidacaoUsuarioDAO;
-
 import java.awt.event.KeyEvent;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -17,7 +15,7 @@ public class FormLogin extends javax.swing.JFrame {
 
     private FormPrincipal principal;
     String resposta;
-    ValidacaoUsuarioDAO valida = new ValidacaoUsuarioDAO();
+
 
     /**
      * Creates new form Tela_Login
@@ -96,7 +94,7 @@ public class FormLogin extends javax.swing.JFrame {
 //    }
 
     public void fazConexao() {
-        valida.verificaUsuario(txtUsuario.getText(), resposta);
+
     }
 
     /**
@@ -163,7 +161,7 @@ public class FormLogin extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(73, 255, 25));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icon/logoLogin.png")));
+//        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/icon/logoLogin.png")));
 
         jLabel4.setForeground(new java.awt.Color(255, 115, 28));
         jLabel4.setText("Versão 1.0.5-(Em desenvolvimento).");
