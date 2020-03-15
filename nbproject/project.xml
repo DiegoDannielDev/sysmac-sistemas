@@ -10,9 +10,10 @@
             <extension file="build-native.xml~" id="j2sedeploy"/>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>SistemaTrabalhoTads</name>
+            <name>FourSolutionsSistemas</name>
             <explicit-platform explicit-source-supported="true"/>
             <source-roots>
+                <root id="src.sysmac.dir"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
