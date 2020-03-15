@@ -35,7 +35,7 @@
       <configuration ws.engine="Glassfish / JAX-WS 2.2 RI / Metro 1.X / JWSDP 2.2" />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_10">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -45,13 +45,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="13" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="hibernate4-persistence" level="project" />
-    <orderEntry type="library" exported="" name="AbsoluteLayout" level="project" />
-    <orderEntry type="library" exported="" name="Spring Data JPA-2.2.4.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="Spring Integration-5.2.3.RELEASE" level="project" />
-    <orderEntry type="library" exported="" name="Spring MVC-5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="JAX-RS-2.1.1" level="project" />
     <orderEntry type="library" name="JAX-WS-Glassfish / JAX-WS 2.2 RI / Metro 1.X / JWSDP 2.2" level="project" />
     <orderEntry type="library" name="Maven: com.toedter:jcalendar:1.4" level="project" />

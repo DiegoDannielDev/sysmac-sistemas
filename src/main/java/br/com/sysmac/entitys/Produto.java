@@ -1,7 +1,7 @@
 package br.com.sysmac.entitys;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "PRODUTO")
@@ -53,14 +53,14 @@ public class Produto {
     }
 
 
-    @OneToMany(mappedBy = "produtoList")
-    private Collection<VendaItem> vendaItem;
+    @OneToMany(mappedBy = "produto", fetch = FetchType.EAGER)
+    private List<VendaItem> vendaItem;
 
-    public Collection<VendaItem> getVendaItem() {
+    public List<VendaItem> getVendaItem() {
         return vendaItem;
     }
 
-    public void setVendaItem(Collection<VendaItem> vendaItem) {
+    public void setVendaItem(List<VendaItem> vendaItem) {
         this.vendaItem = vendaItem;
     }
 }

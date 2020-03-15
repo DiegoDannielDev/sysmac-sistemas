@@ -32,10 +32,10 @@ public class ProdutoService {
         this.produtoRepository.saveAll(produtoList);
     }
 
-    public Optional<Produto> findProdutoId(Long id) {
+    public Produto findProdutoId(Long id) {
         Optional<Produto> produto = this.produtoRepository.findById(id);
         this.produto = produto;
-        return produto;
+        return produto.get();
     }
 
     public Optional<Produto> getProduto() {

@@ -1,10 +1,6 @@
 <component name="libraryTable">
   <library name="swing-layout">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/swing-layout/swing-layout-1.0.4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/swing-layout/swing-layout-1.0.4-src.zip!/" />
-      <root url="jar://$PROJECT_DIR$/lib/swing-layout/swing-layout-1.0.4-doc.zip!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>

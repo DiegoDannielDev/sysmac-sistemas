@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="sysmac-sistemas" target="1.8" />
+      <module name="sysmac-sistemas" target="10" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

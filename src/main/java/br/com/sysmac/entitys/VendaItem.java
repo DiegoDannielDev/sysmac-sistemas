@@ -1,6 +1,5 @@
 package br.com.sysmac.entitys;
 
-import br.com.sysmac.emuns.TiṕoProduto;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ public class VendaItem implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false, name = "FK_ID_PRODUTO")
-    private Produto produtoList;
+    private Produto produto;
     @Column(name = "QTDE_VENDIDA")
     private double qtdeVendida;
     @Column(name = "VALOR_UN_PRODUTO")
@@ -26,10 +25,6 @@ public class VendaItem implements Serializable {
     private double valorAcrescimo;
     @Column(name = "VALOR_DESC_PRODUTO")
     private double valorDesconto;
-    @Column(name = "VALOR_TOTAL_PRODUTO")
-    private double valorTotalProduto;
-    @Column(name = "TIPO_PRODUTO")
-    private TiṕoProduto tipoProduto;
     @ManyToOne(optional = false)
     @JoinColumn(nullable = true, name = "FK_ID_VENDA")
     private Venda vendas;
@@ -37,15 +32,14 @@ public class VendaItem implements Serializable {
     public VendaItem() {
     }
 
-    public VendaItem(Produto produtoList, double qtdeVendida,
+    public VendaItem(Produto produto, double qtdeVendida,
                      double valorUnProduto, double valorAcrescimo,
-                     double valorDesconto, double valorTotalProduto, Venda vendas) {
-        this.produtoList = produtoList;
+                     double valorDesconto, Venda vendas) {
+        this.produto = produto;
         this.qtdeVendida = qtdeVendida;
         this.valorUnProduto = valorUnProduto;
         this.valorAcrescimo = valorAcrescimo;
         this.valorDesconto = valorDesconto;
-        this.valorTotalProduto = valorTotalProduto;
         this.vendas = vendas;
     }
 
@@ -58,12 +52,12 @@ public class VendaItem implements Serializable {
         this.id = id;
     }
 
-    public Produto getProdutoList() {
-        return produtoList;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setProdutoList(Produto produtoList) {
-        this.produtoList = produtoList;
+    public void setProduto(Produto produtoList) {
+        this.produto = produtoList;
     }
 
     public Venda getVendas() {
@@ -106,19 +100,5 @@ public class VendaItem implements Serializable {
         this.valorDesconto = valorDesconto;
     }
 
-    public double getValorTotalProduto() {
-        return valorTotalProduto;
-    }
 
-    public void setValorTotalProduto(double valorTotalProduto) {
-        this.valorTotalProduto = valorTotalProduto;
-    }
-
-    public TiṕoProduto getTipoProduto() {
-        return tipoProduto;
-    }
-
-    public void setTipoProduto(TiṕoProduto tiṕoProduto) {
-        this.tipoProduto = tiṕoProduto;
-    }
 }

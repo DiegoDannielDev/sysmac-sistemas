@@ -3,47 +3,43 @@ package br.com.sysmac.servico;
 import br.com.sysmac.entitys.Cliente;
 import br.com.sysmac.entitys.Produto;
 import br.com.sysmac.entitys.Venda;
-import br.com.sysmac.entitys.VendaItem;
-import br.com.sysmac.repositorys.ClienteRepository;
-import br.com.sysmac.repositorys.ProdutoRepository;
-import br.com.sysmac.repositorys.VendaItemRepository;
 import br.com.sysmac.repositorys.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class VendaService {
     private Venda venda;
-    private VendaRepository vendaRepository;
-    private ProdutoService produtoService;
-    private ClienteRepository clienteRepository;
-    private ProdutoRepository produtoRepository;
-    private VendaItemRepository vendaItemRepository;
-
     @Autowired
-    public VendaService(VendaRepository vendaRepository,
-                        ProdutoService produtoService,
-                        ClienteRepository clienteRepository,
-                        ProdutoRepository produtoRepository,
-                        VendaItemRepository vendaItemRepository
-    ) {
-        this.vendaRepository = vendaRepository;
-        this.produtoService = produtoService;
-        this.clienteRepository = clienteRepository;
-        this.produtoRepository = produtoRepository;
-        this.vendaItemRepository = vendaItemRepository;
+    private VendaRepository vendaRepository;
+    @Autowired
+    private ProdutoService produtoService;
+    @Autowired
+    private ClienteService clienteService;
+
+
+    private VendaItemServico itemServico;
+    private Produto produto;
+
+    public VendaService(VendaItemServico itemServico) {
+        this.itemServico = itemServico;
     }
 
-    public Venda iniciaCodigoVenda(Venda venda, String tipo) {
+    public Venda iniciaCodigoVenda(Venda venda, String tipo, String status) {
         venda.setDataVenda(new Date());
         venda.setTipo(tipo);
+        venda.setCliente(clienteService.getCliente());
+        venda.setStatus(status);
         this.venda = venda;
         return this.vendaRepository.save(venda);
     }
 
-
+    public void insertItens(float qtde) {
+        this.itemServico.insertVendaItem(produtoService.getProduto(), venda, qtde);
+    }
 
     public void deleteByVendaId(Long id) {
         deleteById(id);
@@ -51,13 +47,13 @@ public class VendaService {
 
 
     public Cliente getCliente(Long id) {
-        Optional<Cliente> optional = this.clienteRepository.findById(id);
+        Optional<Cliente> optional = Optional.ofNullable(this.clienteService.findClienteId(id));
         return optional.get();
     }
 
     public Produto getProdutos(Long id) {
-        Optional<Produto> produto = this.produtoRepository.findById(id);
-        return produto.get();
+        Optional<Produto> produto = Optional.ofNullable(this.produtoService.findProdutoId(id));
+        return this.produto = produto.get();
     }
 
 
@@ -73,15 +69,8 @@ public class VendaService {
         this.venda = venda;
     }
 
-    public void iniciaVendaItem(Produto produto, double qtdeProdutoValue, double parseDouble,
-                                double valorUnProduto, double valorAc, double valoDesc, double valorTotal) {
-        VendaItem vendaItem = new VendaItem();
 
-        getVenda().setItemList(Arrays.asList(new VendaItem(produto, qtdeProdutoValue,
-                valorUnProduto, valorAc,
-                valoDesc, valorTotal, venda)));
-
-        this.vendaItemRepository.save(vendaItem);
-
+    public Produto getProduto() {
+        return produto;
     }
 }

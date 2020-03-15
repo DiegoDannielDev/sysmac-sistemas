@@ -35,7 +35,9 @@ public class Venda {
     @Column(name = "VALOR_DESCONTO")
     private double ValorDesconto;
 
-    @OneToMany(mappedBy = "vendas")
+    private String status;
+
+    @OneToMany(mappedBy = "vendas", cascade = CascadeType.REMOVE)
     private List<VendaItem> itemList;
 
     public Venda() {
@@ -84,7 +86,7 @@ public class Venda {
 
     public double getValorTotalVenda() {
         for (VendaItem item : itemList) {
-            valorTotalVenda += item.getProdutoList().getValorUn() * item.getQtdeVendida();
+            valorTotalVenda += item.getProduto().getValorUn() * item.getQtdeVendida();
         }
         return valorTotalVenda;
     }
@@ -140,6 +142,14 @@ public class Venda {
 
     public void setItemList(List<VendaItem> itemList) {
         this.itemList = itemList;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<Produto> adicionaProdutoLista(Produto produto) {

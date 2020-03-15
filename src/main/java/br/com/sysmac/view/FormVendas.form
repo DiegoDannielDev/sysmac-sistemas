@@ -91,12 +91,14 @@
                                       <Group type="102" attributes="0">
                                           <Component id="txtIdProduto" min="-2" pref="86" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtNomeProduto" min="-2" pref="266" max="-2" attributes="0"/>
+                                          <Component id="txtNomeProduto" min="-2" pref="230" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="btnInserirProduto" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtQtdeProduto" max="32767" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="txtQtdeProduto" min="-2" pref="85" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -108,18 +110,7 @@
                                   <Component id="txtValorUn" min="-2" pref="100" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="dataInicioVenda" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                  <Component id="orcamentoRadioButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="vendaRadioButton" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
                                   <Component id="txtValorDesc" min="-2" pref="85" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -134,6 +125,15 @@
                                           <Component id="txtValorAc" min="-2" pref="87" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="dataInicioVenda" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="status" min="-2" pref="157" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="orcamentoRadioButton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="vendaRadioButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -178,6 +178,7 @@
                           <Component id="txtNomeCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="orcamentoRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="vendaRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="status" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="dataInicioVenda" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -186,7 +187,6 @@
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtIdProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtNomeProduto" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtQtdeProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtValorUn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -194,6 +194,8 @@
                       <Component id="txtValorDesc" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtValorAc" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtQtdeProduto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnInserirProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -204,7 +206,7 @@
                       <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="208" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="215" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -276,8 +278,6 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNomeProduto">
-        </Component>
-        <Component class="javax.swing.JSpinner" name="txtQtdeProduto">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -420,6 +420,21 @@
         <Component class="com.toedter.calendar.JDateChooser" name="dataInicioVenda">
           <Properties>
             <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy HH:mm:ss"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtQtdeProduto">
+        </Component>
+        <Component class="javax.swing.JButton" name="btnInserirProduto">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="+"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInserirProdutoActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="status">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="status"/>
           </Properties>
         </Component>
       </SubComponents>
