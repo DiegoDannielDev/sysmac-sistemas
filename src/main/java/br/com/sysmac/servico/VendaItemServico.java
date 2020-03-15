@@ -2,66 +2,50 @@ package br.com.sysmac.servico;
 
 import br.com.sysmac.entitys.Produto;
 import br.com.sysmac.entitys.Venda;
-import br.com.sysmac.repositorys.ClienteRepository;
-import br.com.sysmac.repositorys.ProdutoRepository;
+import br.com.sysmac.entitys.VendaItem;
+import br.com.sysmac.entitys.dto.VendaItemDTO;
 import br.com.sysmac.repositorys.VendaItemRepository;
-import br.com.sysmac.repositorys.VendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 public class VendaItemServico {
 
-    private Venda venda = new Venda();
-    private ClienteRepository clienteRepository;
-    private ProdutoRepository produtoRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(VendaItemServico.class);
     private VendaItemRepository vendaItemRepository;
-    private VendaRepository vendaRepository;
     private VendaService vendaService;
-    Produto produto = new Produto();
+    private ProdutoService produtoService;
 
-    @Autowired
-    public VendaItemServico(ClienteRepository clienteRepository,
-                            ProdutoRepository produtoRepository,
-                            VendaItemRepository vendaItemRepository,
-                            VendaRepository vendaRepository,
-                            VendaService vendaService) {
-        this.clienteRepository = clienteRepository;
-        this.produtoRepository = produtoRepository;
+    public VendaItemServico(VendaItemRepository vendaItemRepository,
+                            VendaService vendaService, ProdutoService produtoService) {
         this.vendaItemRepository = vendaItemRepository;
-        this.vendaRepository = vendaRepository;
         this.vendaService = vendaService;
+        this.produtoService = produtoService;
     }
 
+    public static VendaItem converteItemDto(VendaItemDTO vendaItemDTO, List<Produto> produtoList, Venda venda) {
 
-//    public Venda venda(String tipo) {
-//        venda.setTipo(tipo);
-//        venda = this.vendaService.iniciaCodigoVenda(venda);
-//        return venda;
-//    }
-//
-//    public VendaItem iniciaVendaItem() {
-//        vendaService.iniciaCodigoVenda(new Venda());
-//        VendaItem vendaItem = new VendaItem();
-//        venda.setItemList(Arrays.asList(new VendaItem(produto, 12,
-//                12.2, 0,
-//                0, 12.2, venda)));
-//        this.vendaItemRepository.save(vendaItem);
-//        return vendaItem;
-//    }
-//
-//
-//    public void deleteByVendaId(Long id) {
-//        this.vendaService.deleteById(id);
-//    }
-//
-//
-//    public Cliente getCliente(Long id) {
-//        Optional<Cliente> optional = this.clienteRepository.findById(id);
-//        return optional.get();
-//    }
-//
-//    public Produto getProdutos(Long id) {
-//        Optional<Produto> produto = this.produtoRepository.findById(id);
-//        return produto.get();
-//    }
+        LOGGER.info("Convertendo VendaItemDTO em VendaItem");
+        VendaItem vd = new VendaItem();
+        vd.setQtdeVendida(vendaItemDTO.getQtdeVendida());
+        vd.setTipoProduto(vendaItemDTO.getTipoProduto());
+        vd.setValorAcrescimo(vendaItemDTO.getValorAcrescimo());
+        vd.setValorDesconto(vendaItemDTO.getValorDesconto());
+        vd.setValorTotalProduto(vendaItemDTO.getValorTotalProduto());
+        vd.setValorUnProduto(vendaItemDTO.getValorUnProduto());
+        vd.setVendas(venda);
+        vd.setProdutoList(produtoList.get(0));
+        return vd;
+
+    }
+
+    public VendaItem saveVendaItem() {
+        Venda venda = this.vendaService.getVenda();
+        Produto produto = produtoService.getProduto().get();
+
+
+    }
+
 }

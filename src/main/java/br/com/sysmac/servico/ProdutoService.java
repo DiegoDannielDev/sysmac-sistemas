@@ -15,6 +15,8 @@ public class ProdutoService {
 
     private ProdutoRepository produtoRepository;
 
+    private Optional<Produto> produto;
+
     @Autowired
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
@@ -30,8 +32,17 @@ public class ProdutoService {
         this.produtoRepository.saveAll(produtoList);
     }
 
-    public Optional<Produto> getProduto(Long id) {
+    public Optional<Produto> findProdutoId(Long id) {
         Optional<Produto> produto = this.produtoRepository.findById(id);
+        this.produto = produto;
         return produto;
+    }
+
+    public Optional<Produto> getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Optional<Produto> produto) {
+        this.produto = produto;
     }
 }
