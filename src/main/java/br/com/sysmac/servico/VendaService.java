@@ -19,8 +19,6 @@ public class VendaService {
     private ProdutoService produtoService;
     @Autowired
     private ClienteService clienteService;
-
-
     private VendaItemServico itemServico;
     private Produto produto;
 
@@ -34,10 +32,11 @@ public class VendaService {
         venda.setCliente(clienteService.getCliente());
         venda.setStatus(status);
         this.venda = venda;
-        return this.vendaRepository.save(venda);
+        this.vendaRepository.save(venda);
+        return venda;
     }
 
-    public void insertItens(float qtde) {
+    public void insertItens(double qtde) {
         this.itemServico.insertVendaItem(produtoService.getProduto(), venda, qtde);
     }
 
@@ -56,6 +55,11 @@ public class VendaService {
         return this.produto = produto.get();
     }
 
+    public void deleteByItem(Long id) {
+        this.itemServico.deleteItensById(id);
+
+    }
+
 
     public void deleteById(Long id) {
         this.vendaRepository.deleteById(id);
@@ -72,5 +76,9 @@ public class VendaService {
 
     public Produto getProduto() {
         return produto;
+    }
+
+    public VendaItemServico getItemServico() {
+        return itemServico;
     }
 }

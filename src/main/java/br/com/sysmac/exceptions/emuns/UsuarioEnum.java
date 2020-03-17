@@ -1,4 +1,4 @@
-package br.com.sysmac.exceptions.enums;
+package br.com.sysmac.exceptions.emuns;
 
 public enum UsuarioEnum {
     USUARIO_CADASTRADO("Usuario cadastrado com sucesso"),

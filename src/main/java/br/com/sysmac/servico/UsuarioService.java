@@ -2,7 +2,7 @@ package br.com.sysmac.servico;
 
 import br.com.sysmac.entitys.Usuario;
 import br.com.sysmac.exceptions.UsuarioExceptions;
-import br.com.sysmac.exceptions.enums.UsuarioEnum;
+import br.com.sysmac.exceptions.emuns.UsuarioEnum;
 import br.com.sysmac.repositorys.UsuarioRepository;
 import org.springframework.stereotype.Service;
 

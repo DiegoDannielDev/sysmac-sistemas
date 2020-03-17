@@ -4,7 +4,6 @@ import br.com.sysmac.emuns.FormaPagamento;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -152,10 +151,13 @@ public class Venda {
         this.status = status;
     }
 
-    public List<Produto> adicionaProdutoLista(Produto produto) {
-        List<Produto> produtoList = new ArrayList<>();
-        produtoList.add(produto);
-        return produtoList;
+
+    public double valorTotalVenda() {
+        double total = 0;
+        for (VendaItem item : itemList) {
+            total += item.getQtdeVendida() * item.getValorUnProduto();
+        }
+        return total;
     }
 
 }

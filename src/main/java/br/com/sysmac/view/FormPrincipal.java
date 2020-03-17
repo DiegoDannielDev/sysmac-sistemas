@@ -20,6 +20,7 @@ public final class FormPrincipal extends JFrame {
     public FormPrincipal() {
         initComponents();
         barra.setVisible(false);
+        setExtendedState(6);
         telaModel = new GerenciamentoTelaModel();
         
     }

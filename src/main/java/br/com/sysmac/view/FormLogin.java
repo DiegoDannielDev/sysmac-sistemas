@@ -244,6 +244,7 @@ public class FormLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             principal.setVisible(true);
+            dispose();
 //            Thread();
         }
     }//GEN-LAST:event_btnValidaKeyPressed

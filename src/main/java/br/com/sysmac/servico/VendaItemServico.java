@@ -23,7 +23,7 @@ public class VendaItemServico {
 
     }
 
-    public VendaItem insertVendaItem(Optional<Produto> produto, Venda venda, float qtde) {
+    public VendaItem insertVendaItem(Optional<Produto> produto, Venda venda, double qtde) {
         try {
             VendaItem vendaItem = new VendaItem();
             vendaItem.setProduto(produto.get());
@@ -35,6 +35,11 @@ public class VendaItemServico {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+
+    }
+
+    public void deleteItensById(Long id) {
+        this.vendaItemRepository.deleteById(id);
 
     }
 

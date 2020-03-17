@@ -1,6 +1,6 @@
 package br.com.sysmac.exceptions;
 
-import br.com.sysmac.exceptions.enums.UsuarioEnum;
+import br.com.sysmac.exceptions.emuns.UsuarioEnum;
 
 
 public class UsuarioExceptions extends RuntimeException {

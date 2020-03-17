@@ -1,6 +1,7 @@
 package br.com.sysmac.servico;
 
 import br.com.sysmac.entitys.Cliente;
+import br.com.sysmac.exceptions.ClienteExceptions;
 import br.com.sysmac.repositorys.ClienteRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class ClienteService {
             return this.cliente = cliente.get();
         } else {
             JOptionPane.showMessageDialog(null, "Cliente não encontrado");
-            throw new RuntimeException("Cliente não encontrado");
+            throw new ClienteExceptions("Cliente não encontrado");
         }
     }
 
