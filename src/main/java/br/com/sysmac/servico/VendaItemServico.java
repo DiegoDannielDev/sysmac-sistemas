@@ -9,38 +9,45 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
-import java.util.Optional;
 
 @Service
 public class VendaItemServico {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VendaItemServico.class);
-    private VendaItemRepository vendaItemRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(VendaItemServico.class);
+	private VendaItemRepository vendaItemRepository;
+	private VendaItem vendaItem;
+	private Long idVenda;
+
+	public VendaItemServico(VendaItemRepository vendaItemRepository) {
+		this.vendaItemRepository = vendaItemRepository;
+
+	}
+
+	public void insertVendaItem(Produto produto, double qtdeVendida,
+								double valorUnProduto, double valorAcrescimo,
+								double valorDesconto, Venda vendas) {
+		try {
+			vendaItem = new VendaItem(
+					produto,
+					qtdeVendida,
+					produto.getValorUn(),
+					valorAcrescimo,
+					valorDesconto,
+					vendas);
+			JOptionPane.showMessageDialog(null, "Item inserido");
+			this.vendaItemRepository.save(vendaItem);
+			idVenda = vendas.getId();
+
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+
+	}
 
 
-    public VendaItemServico(VendaItemRepository vendaItemRepository) {
-        this.vendaItemRepository = vendaItemRepository;
+	public void deleteProdutoById(Long idProduto) {
 
-    }
-
-    public VendaItem insertVendaItem(Optional<Produto> produto, Venda venda, double qtde) {
-        try {
-            VendaItem vendaItem = new VendaItem();
-            vendaItem.setProduto(produto.get());
-            vendaItem.setVendas(venda);
-            vendaItem.setValorUnProduto(produto.get().getValorUn());
-            vendaItem.setQtdeVendida(qtde);
-            JOptionPane.showMessageDialog(null, "Item inserido");
-            return this.vendaItemRepository.save(vendaItem);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-    }
-
-    public void deleteItensById(Long id) {
-        this.vendaItemRepository.deleteById(id);
-
-    }
+		this.vendaItemRepository.deleteVendaItemByByItem(idProduto, this.idVenda);
+	}
 
 }

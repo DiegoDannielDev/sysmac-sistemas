@@ -36,12 +36,12 @@ public class VendaService {
         return venda;
     }
 
-    public void insertItens(double qtde) {
-        this.itemServico.insertVendaItem(produtoService.getProduto(), venda, qtde);
+    public void insertVendaItens(double qtde, double ValorAcrescimo, double valorDesconto) {
+        this.itemServico.insertVendaItem(produto, qtde, produto.getValorUn(), ValorAcrescimo, valorDesconto, venda);
     }
 
     public void deleteByVendaId(Long id) {
-        deleteById(id);
+        this.vendaRepository.deleteById(id);
     }
 
 
@@ -55,30 +55,13 @@ public class VendaService {
         return this.produto = produto.get();
     }
 
-    public void deleteByItem(Long id) {
-        this.itemServico.deleteItensById(id);
+    public void deleteItensById(Long id) {
+        this.itemServico.deleteProdutoById(id);
 
-    }
-
-
-    public void deleteById(Long id) {
-        this.vendaRepository.deleteById(id);
     }
 
     public Venda getVenda() {
         return venda;
     }
 
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
-
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public VendaItemServico getItemServico() {
-        return itemServico;
-    }
 }
