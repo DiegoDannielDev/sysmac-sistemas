@@ -20,7 +20,7 @@ public class ProdutoService {
     @Autowired
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
-        saveProduto();
+      //  saveProduto();
     }
 
     public void saveProduto() {

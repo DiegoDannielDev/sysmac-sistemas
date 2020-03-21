@@ -23,16 +23,16 @@ public class VendaItemServico {
 
 	}
 
-	public void insertVendaItem(Produto produto, double qtdeVendida,
-								double valorUnProduto, double valorAcrescimo,
-								double valorDesconto, Venda vendas) {
+	public void insertVendaItem(Produto produto, double qtdeVendida, Venda vendas) {
 		try {
+			if (vendas == null) {
+				JOptionPane.showMessageDialog(null, "Iniciar Vendas antes de inserir produto na lista");
+				throw new RuntimeException("iniciar vendas");
+			}
 			vendaItem = new VendaItem(
 					produto,
 					qtdeVendida,
 					produto.getValorUn(),
-					valorAcrescimo,
-					valorDesconto,
 					vendas);
 			JOptionPane.showMessageDialog(null, "Item inserido");
 			this.vendaItemRepository.save(vendaItem);
@@ -46,8 +46,10 @@ public class VendaItemServico {
 
 
 	public void deleteProdutoById(Long idProduto) {
-
 		this.vendaItemRepository.deleteVendaItemByByItem(idProduto, this.idVenda);
 	}
 
+	public void deleteAllItens() {
+		this.vendaItemRepository.deleteVendaItemByIdVenda(this.idVenda);
+	}
 }

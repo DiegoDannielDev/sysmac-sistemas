@@ -1,5 +1,7 @@
 package br.com.sysmac.servico;
 
+import br.com.sysmac.emuns.FormaPagamento;
+import br.com.sysmac.emuns.StatusVenda;
 import br.com.sysmac.entitys.Cliente;
 import br.com.sysmac.entitys.Produto;
 import br.com.sysmac.entitys.Venda;
@@ -36,9 +38,30 @@ public class VendaService {
         return venda;
     }
 
-    public void insertVendaItens(double qtde, double ValorAcrescimo, double valorDesconto) {
-        this.itemServico.insertVendaItem(produto, qtde, produto.getValorUn(), ValorAcrescimo, valorDesconto, venda);
+
+
+    public Venda updateVenda(double valorTotalVenda, double valorTroco, double valorEntrada,
+                             FormaPagamento formaPagamento, double valorTotalDesconto, double valorAcrescimo){
+        var vendaUpdate = this.venda;
+        vendaUpdate.setId(this.venda.getId());
+        vendaUpdate.setValorTotalVenda(valorTotalVenda);
+        vendaUpdate.setStatus(StatusVenda.F.toString());
+        vendaUpdate.setValorTroco(valorTroco);
+        vendaUpdate.setValorEntrada(valorEntrada);
+        vendaUpdate.setFormaPagamento(formaPagamento);
+        vendaUpdate.setValorDesconto(valorTotalDesconto);
+        vendaUpdate.setValorAcrescimo(valorAcrescimo);
+        return this.vendaRepository.saveAndFlush(vendaUpdate);
+
+
+
     }
+
+    public void insertVendaItens(double qtde) {
+        this.itemServico.insertVendaItem(produto, qtde, venda);
+    }
+
+
 
     public void deleteByVendaId(Long id) {
         this.vendaRepository.deleteById(id);
@@ -60,8 +83,14 @@ public class VendaService {
 
     }
 
+    public void deleteByItensALl() {
+        this.itemServico.deleteAllItens();
+    }
+
     public Venda getVenda() {
         return venda;
     }
+
+
 
 }

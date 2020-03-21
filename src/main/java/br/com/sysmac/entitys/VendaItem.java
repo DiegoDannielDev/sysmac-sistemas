@@ -37,13 +37,10 @@ public class VendaItem implements Serializable {
     }
 
 
-    public VendaItem(Produto produto, double qtdeVendida, double valorUnProduto, double valorAcrescimo,
-                     double valorDesconto, Venda vendas) {
+    public VendaItem(Produto produto, double qtdeVendida, double valorUnProduto,  Venda vendas) {
         this.produto = produto;
         this.qtdeVendida = qtdeVendida;
         this.valorUnProduto = valorUnProduto;
-        this.valorAcrescimo = valorAcrescimo;
-        this.valorDesconto = valorDesconto;
         this.vendas = vendas;
     }
 

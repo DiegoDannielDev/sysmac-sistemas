@@ -17,12 +17,10 @@ public class Cliente {
     private String endereco;
     private ClienteTipoEmun tipoEmun;
 
-    public Cliente(String nome) {
-        this.nome = nome;
-    }
-
     public Cliente() {
     }
+
+
 
     public Long getId() {
         return id;
@@ -55,4 +53,6 @@ public class Cliente {
     public void setTipoEmun(ClienteTipoEmun tipoEmun) {
         this.tipoEmun = tipoEmun;
     }
+
+
 }

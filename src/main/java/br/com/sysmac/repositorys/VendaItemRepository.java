@@ -16,4 +16,10 @@ public interface VendaItemRepository extends JpaRepository<VendaItem, Long> {
 	@Query(value = "DELETE FROM venda_item vi WHERE vi.id_produto =:id_produto and vi.id_venda =:idVenda", nativeQuery = true)
 	void deleteVendaItemByByItem(@Param("id_produto") Long id_produto, @Param("idVenda") Long idVenda);
 
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM venda_item vi WHERE vi.id_venda =:idVenda", nativeQuery = true)
+	void deleteVendaItemByIdVenda(@Param("idVenda") Long id);
+
 }
